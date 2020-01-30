@@ -43,7 +43,7 @@ resources:
   - name: gcs-resource-src
     type: git
     source:
-      uri: https://github.com/frodenas/gcs-resource.git
+      uri: https://github.com/steve-sienk/gcs-resource.git
       branch: master
 
   - name: gcs-resource-image

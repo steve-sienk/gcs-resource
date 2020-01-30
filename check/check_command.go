@@ -3,8 +3,8 @@ package check
 import (
 	"errors"
 	"fmt"
-	"github.com/frodenas/gcs-resource"
-	"github.com/frodenas/gcs-resource/versions"
+	"github.com/steve-sienk/gcs-resource"
+	"github.com/steve-sienk/gcs-resource/versions"
 )
 
 type CheckCommand struct {

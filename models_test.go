@@ -5,7 +5,7 @@ import (
 	. "github.com/onsi/ginkgo/extensions/table"
 	. "github.com/onsi/gomega"
 
-	"github.com/frodenas/gcs-resource"
+	"github.com/steve-sienk/gcs-resource"
 )
 
 var _ = Describe("GCS Resource model", func() {

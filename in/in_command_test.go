@@ -9,10 +9,10 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	gcsresource "github.com/frodenas/gcs-resource"
-	"github.com/frodenas/gcs-resource/fakes"
+	gcsresource "github.com/steve-sienk/gcs-resource"
+	"github.com/steve-sienk/gcs-resource/fakes"
 
-	. "github.com/frodenas/gcs-resource/in"
+	. "github.com/steve-sienk/gcs-resource/in"
 )
 
 var _ = Describe("In Command", func() {
@@ -114,6 +114,7 @@ var _ = Describe("In Command", func() {
 						"folder/file-3.53.tgz",
 						"folder/file-2.33.333.tgz",
 						"folder/file-2.4.3.tgz",
+						"folder/file.json",
 					}, nil)
 				})
 
@@ -238,6 +239,39 @@ var _ = Describe("In Command", func() {
 					Expect(objectPath).To(Equal("folder/file-1.3.tgz"))
 					Expect(generation).To(Equal(int64(0)))
 					Expect(localPath).To(Equal(filepath.Join(destDir, "file-1.3.tgz")))
+				})
+
+				Describe("when it downloads only a single json file", func() {
+					It("writes the metadata with the json contents", func() {
+
+						request.Source.Regexp = "folder/file.json"
+						gcsClient.URLReturns("gs://bucket-name/folder/file.json", nil)
+						request.Version.Path = "folder/file.json"
+						gcsClient.DownloadFileStub = gcsDownloadTaskStub("file.json")
+
+						response, err := command.Run(destDir, request)
+						Expect(err).ToNot(HaveOccurred())
+
+						Expect(gcsClient.DownloadFileCallCount()).To(Equal(1))
+						bucketName, objectPath, generation, localPath := gcsClient.DownloadFileArgsForCall(0)
+
+						Expect(bucketName).To(Equal("bucket-name"))
+						Expect(objectPath).To(Equal("folder/file.json"))
+						Expect(generation).To(Equal(int64(0)))
+						Expect(localPath).To(Equal(filepath.Join(destDir, "file.json")))
+
+						Expect(response.Version.Path).To(Equal("folder/file.json"))
+						Expect(response.Version.Generation).To(Equal(""))
+
+						Expect(response.Metadata[0].Name).To(Equal("filename"))
+						Expect(response.Metadata[0].Value).To(Equal("file.json"))
+
+						Expect(response.Metadata[1].Name).To(Equal("url"))
+						Expect(response.Metadata[1].Value).To(Equal("gs://bucket-name/folder/file.json"))
+
+						Expect(response.Metadata[2].Name).To(Equal("contents"))
+						Expect(response.Metadata[2].Value).To(Equal("{\"data\": 0.1}"))
+					})
 				})
 
 				It("creates a 'version' file that contains the matched version", func() {

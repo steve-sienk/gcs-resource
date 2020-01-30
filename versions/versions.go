@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/cppforlife/go-semi-semantic/version"
-	"github.com/frodenas/gcs-resource"
+	"github.com/steve-sienk/gcs-resource"
 )
 
 const regexpSpecialChars = `\\\*\.\[\]\(\)\{\}\?\|\^\$\+`

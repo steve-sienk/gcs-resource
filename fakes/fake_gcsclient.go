@@ -4,7 +4,7 @@ package fakes
 import (
 	"sync"
 
-	"github.com/frodenas/gcs-resource"
+	"github.com/steve-sienk/gcs-resource"
 	storage "google.golang.org/api/storage/v1"
 )
 

@@ -8,10 +8,10 @@ image_resource:
 
 inputs:
   - name: gcs-resource-src
-    path: go/src/github.com/frodenas/gcs-resource
+    path: go/src/github.com/steve-sienk/gcs-resource
 
 run:
-  path: go/src/github.com/frodenas/gcs-resource/ci/tasks/integration-tests.sh
+  path: go/src/github.com/steve-sienk/gcs-resource/ci/tasks/integration-tests.sh
 
 params:
   GCS_RESOURCE_JSON_KEY:

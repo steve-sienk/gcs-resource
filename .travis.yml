@@ -2,7 +2,7 @@ sudo: required
 
 language: go
 
-go_import_path: github.com/frodenas/gcs-resource
+go_import_path: github.com/steve-sienk/gcs-resource
 
 services:
   - docker

@@ -8,9 +8,10 @@ import (
 	"path"
 	"path/filepath"
 	"strconv"
+	"strings"
 
-	"github.com/frodenas/gcs-resource"
-	"github.com/frodenas/gcs-resource/versions"
+	"github.com/steve-sienk/gcs-resource"
+	"github.com/steve-sienk/gcs-resource/versions"
 )
 
 type InCommand struct {
@@ -58,8 +59,9 @@ func (command *InCommand) createDirectory(destinationDir string) error {
 func (command *InCommand) inByRegex(destinationDir string, request InRequest, skipDownload bool) (InResponse, error) {
 	bucketName := request.Source.Bucket
 
-	var url, objectPath string
+	var url, objectPath, contents string
 	var err error
+	contents = ""
 
 	isInitialVersion := request.Source.InitialPath != "" && request.Version.Path == request.Source.InitialPath
 	if isInitialVersion {
@@ -82,6 +84,11 @@ func (command *InCommand) inByRegex(destinationDir string, request InRequest, sk
 
 			if err = command.downloadFile(bucketName, objectPath, 0, localPath); err != nil {
 				return InResponse{}, err
+			}
+
+			if strings.HasSuffix(objectPath, ".json"){
+				data,_ := ioutil.ReadFile(localPath)
+				contents = string (data)
 			}
 
 			if request.Params.Unpack {
@@ -113,7 +120,7 @@ func (command *InCommand) inByRegex(destinationDir string, request InRequest, sk
 		Version: gcsresource.Version{
 			Path: objectPath,
 		},
-		Metadata: command.metadata(objectPath, url),
+		Metadata: command.metadata(objectPath, url, contents),
 	}, nil
 }
 
@@ -133,7 +140,9 @@ func (command *InCommand) pathToDownload(request InRequest) (string, error) {
 }
 
 func (command *InCommand) inByVersionedFile(destinationDir string, request InRequest, skipDownload bool) (InResponse, error) {
-	var url string
+	var url, contents string
+
+	contents = ""
 	bucketName := request.Source.Bucket
 	objectPath := request.Source.VersionedFile
 	generation, err := request.Version.GenerationValue()
@@ -158,6 +167,11 @@ func (command *InCommand) inByVersionedFile(destinationDir string, request InReq
 
 			if err = command.downloadFile(bucketName, objectPath, generation, localPath); err != nil {
 				return InResponse{}, err
+			}
+
+			if strings.HasSuffix(objectPath, ".json"){
+				data,_ := ioutil.ReadFile(localPath)
+				contents = string (data)
 			}
 
 			if request.Params.Unpack {
@@ -185,7 +199,7 @@ func (command *InCommand) inByVersionedFile(destinationDir string, request InReq
 		Version: gcsresource.Version{
 			Generation: fmt.Sprintf("%d", generation),
 		},
-		Metadata: command.metadata(objectPath, url),
+		Metadata: command.metadata(objectPath, url, contents),
 	}, nil
 }
 
@@ -232,7 +246,7 @@ func (command *InCommand) unpackFile(sourcePath string) error {
 
 	return nil
 }
-func (command *InCommand) metadata(objectPath string, url string) []gcsresource.MetadataPair {
+func (command *InCommand) metadata(objectPath string, url string, contents string) []gcsresource.MetadataPair {
 	objectFilename := filepath.Base(objectPath)
 
 	metadata := []gcsresource.MetadataPair{
@@ -245,6 +259,8 @@ func (command *InCommand) metadata(objectPath string, url string) []gcsresource.
 	if url != "" {
 		metadata = append(metadata, gcsresource.MetadataPair{Name: "url", Value: url})
 	}
-
+	if contents != "" {
+		metadata = append(metadata, gcsresource.MetadataPair{Name: "contents", Value: contents})
+	}
 	return metadata
 }

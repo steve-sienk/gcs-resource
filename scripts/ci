@@ -10,7 +10,7 @@ export PATH=$GOPATH/bin:$PATH
 
 BUILD_DIR=$PWD/built-resource
 
-cd $GOPATH/src/github.com/frodenas/gcs-resource
+cd $GOPATH/src/github.com/steve-sienk/gcs-resource
 
 make
 

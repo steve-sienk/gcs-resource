@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/frodenas/gcs-resource"
+	"github.com/steve-sienk/gcs-resource"
 )
 
 type OutCommand struct {

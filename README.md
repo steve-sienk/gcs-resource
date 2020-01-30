@@ -139,7 +139,7 @@ resources:
 
 ## Development
 
-* Get the resource: `go get github.com/frodenas/gcs-resource`
+* Get the resource: `go get github.com/steve-sienk/gcs-resource`
 * Run the `unit-tests`: `make`
 * Run the `integration-tests`: `make integration-tests`
 * Build the source code using concourse: `fly -t ConcourseTarget execute -c ci/tasks/build.yml -i gcs-resource-src=. -o built-resource=.`
@@ -153,10 +153,10 @@ Refer to the [contributing guidelines][contributing].
 
 Apache License 2.0, see [LICENSE][license].
 
-[contributing]: https://github.com/frodenas/gcs-resource/blob/master/CONTRIBUTING.md
+[contributing]: https://github.com/steve-sienk/gcs-resource/blob/master/CONTRIBUTING.md
 [gcs]: https://cloud.google.com/storage/
 [gcs-acls]: https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
 [gsc-versioning]: https://cloud.google.com/storage/docs/object-versioning#_Enabling
-[license]: https://github.com/frodenas/gcs-resource/blob/master/LICENSE
+[license]: https://github.com/steve-sienk/gcs-resource/blob/master/LICENSE
 [s3-resource]: https://github.com/concourse/s3-resource
 [semver]: http://semver.org/

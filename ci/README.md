@@ -8,7 +8,7 @@ In order to run the GCS Resource Concourse Pipeline you must have an existing [C
 fly -t <CONCOURSE TARGET NAME> login -c <YOUR CONCOURSE URL>
 ```
 
-* Update the [credentials.yml](https://github.com/frodenas/gcs-resource/blob/master/ci/credentials.yml) file.
+* Update the [credentials.yml](https://github.com/steve-sienk/gcs-resource/blob/master/ci/credentials.yml) file.
 
 * Set the GCS Resource Concourse Pipeline:
 

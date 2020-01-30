@@ -1,7 +1,7 @@
 package out
 
 import (
-	"github.com/frodenas/gcs-resource"
+	"github.com/steve-sienk/gcs-resource"
 )
 
 type OutRequest struct {

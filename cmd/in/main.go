@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/frodenas/gcs-resource"
-	"github.com/frodenas/gcs-resource/in"
+	"github.com/steve-sienk/gcs-resource"
+	"github.com/steve-sienk/gcs-resource/in"
 )
 
 func main() {

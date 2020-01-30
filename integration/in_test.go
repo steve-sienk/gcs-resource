@@ -16,8 +16,8 @@ import (
 	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
 
-	gcsresource "github.com/frodenas/gcs-resource"
-	"github.com/frodenas/gcs-resource/in"
+	gcsresource "github.com/steve-sienk/gcs-resource"
+	"github.com/steve-sienk/gcs-resource/in"
 	uuid "github.com/nu7hatch/gouuid"
 )
 
