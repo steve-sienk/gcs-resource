@@ -51,4 +51,4 @@ resources:
     source:
       username: {{docker_username}}
       password: {{docker_password}}
-      repository: frodenas/gcs-resource
+      repository: gemfire/gcs-resource
