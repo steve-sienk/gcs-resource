@@ -1,4 +1,8 @@
-# GCS Resource [![Build Status](https://travis-ci.org/frodenas/gcs-resource.png)](https://travis-ci.org/frodenas/gcs-resource)
+# GCS Resource with JSON Metadata
+
+This is based on the frodenas/gcs-resource. The primary difference is that if it pulls a JSON file, it will display its contents in the metadata.
+
+## frodenas/GCS-Resource [![Build Status](https://travis-ci.org/frodenas/gcs-resource.png)](https://travis-ci.org/frodenas/gcs-resource)
 
 Versions objects in a [Google Cloud Storage][gcs] (GCS) bucket, by pattern-matching filenames to identify version numbers.
 
