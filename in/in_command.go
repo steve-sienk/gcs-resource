@@ -59,9 +59,9 @@ func (command *InCommand) createDirectory(destinationDir string) error {
 func (command *InCommand) inByRegex(destinationDir string, request InRequest, skipDownload bool) (InResponse, error) {
 	bucketName := request.Source.Bucket
 
-	var url, objectPath, contents string
+	var url, objectPath string
 	var err error
-	contents = ""
+	contents := ""
 
 	isInitialVersion := request.Source.InitialPath != "" && request.Version.Path == request.Source.InitialPath
 	if isInitialVersion {

@@ -3,6 +3,7 @@ package out
 import (
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"path/filepath"
 	"strings"
 
@@ -20,6 +21,7 @@ func NewOutCommand(gcsClient gcsresource.GCSClient) *OutCommand {
 }
 
 func (command *OutCommand) Run(sourceDir string, request OutRequest) (OutResponse, error) {
+	contents := ""
 	if ok, message := request.Source.IsValid(); !ok {
 		return OutResponse{}, errors.New(message)
 	}
@@ -34,6 +36,11 @@ func (command *OutCommand) Run(sourceDir string, request OutRequest) (OutRespons
 	}
 
 	objectPath := command.objectPath(request, localPath)
+
+	if strings.HasSuffix(objectPath, ".json"){
+		data,_ := ioutil.ReadFile(localPath)
+		contents = string (data)
+	}
 
 	objectContentType := command.objectContentType(request)
 
@@ -55,7 +62,7 @@ func (command *OutCommand) Run(sourceDir string, request OutRequest) (OutRespons
 
 	return OutResponse{
 		Version:  version,
-		Metadata: command.metadata(objectPath, url),
+		Metadata: command.metadata(objectPath, url, contents),
 	}, nil
 }
 
@@ -93,7 +100,7 @@ func parentDir(regexp string) string {
 	return regexp[:strings.LastIndex(regexp, "/")+1]
 }
 
-func (command *OutCommand) metadata(objectPath string, url string) []gcsresource.MetadataPair {
+func (command *OutCommand) metadata(objectPath string, url string, contents string) []gcsresource.MetadataPair {
 	objectFilename := filepath.Base(objectPath)
 
 	metadata := []gcsresource.MetadataPair{
@@ -105,6 +112,9 @@ func (command *OutCommand) metadata(objectPath string, url string) []gcsresource
 			Name:  "url",
 			Value: url,
 		},
+	}
+	if contents != "" {
+		metadata = append(metadata, gcsresource.MetadataPair{Name: "contents", Value: contents})
 	}
 
 	return metadata

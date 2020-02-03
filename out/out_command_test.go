@@ -2,6 +2,7 @@ package out_test
 
 import (
 	"errors"
+	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -172,6 +173,60 @@ var _ = Describe("Out Command", func() {
 
 				Expect(response.Metadata[1].Name).To(Equal("url"))
 				Expect(response.Metadata[1].Value).To(Equal("gs://bucket-name/folder/file.tgz"))
+			})
+
+			createJsonFile := func(path string) {
+				fullPath := filepath.Join(sourceDir, path)
+				err := os.MkdirAll(filepath.Dir(fullPath), 0755)
+				Expect(err).ToNot(HaveOccurred())
+
+
+				sourcePath := filepath.Join("fixtures", "file.json")
+				Expect(sourcePath).To(BeAnExistingFile())
+
+				from, err := os.Open(sourcePath)
+				Expect(err).NotTo(HaveOccurred())
+				defer from.Close()
+
+				to, err := os.OpenFile(fullPath, os.O_RDWR|os.O_CREATE, 0600)
+				Expect(err).NotTo(HaveOccurred())
+				defer to.Close()
+
+				_, err = io.Copy(to, from)
+				Expect(err).NotTo(HaveOccurred())
+			}
+
+			Describe("when it uploads a single json file", func() {
+				BeforeEach(func() {
+					request.Params.File = "folder/file.json"
+					request.Source.Regexp = "folder/file.json"
+					createJsonFile("folder/file.json")
+				})
+				It("writes the json file contents to metadata", func() {
+					gcsClient.UploadFileReturns(int64(12345), nil)
+					gcsClient.URLReturns("gs://bucket-name/folder/file.json", nil)
+
+					response, err := command.Run(sourceDir, request)
+					Expect(err).ToNot(HaveOccurred())
+
+					Expect(gcsClient.URLCallCount()).To(Equal(1))
+					bucketName, objectPath, generation := gcsClient.URLArgsForCall(0)
+					Expect(bucketName).To(Equal("bucket-name"))
+					Expect(objectPath).To(Equal("folder/file.json"))
+					Expect(generation).To(Equal(int64(0)))
+
+					Expect(response.Version.Path).To(Equal("folder/file.json"))
+					Expect(response.Version.Generation).To(Equal(""))
+
+					Expect(response.Metadata[0].Name).To(Equal("filename"))
+					Expect(response.Metadata[0].Value).To(Equal("file.json"))
+
+					Expect(response.Metadata[1].Name).To(Equal("url"))
+					Expect(response.Metadata[1].Value).To(Equal("gs://bucket-name/folder/file.json"))
+
+					Expect(response.Metadata[2].Name).To(Equal("contents"))
+					Expect(response.Metadata[2].Value).To(Equal("{\"data\": -1.23}"))
+				})
 			})
 
 			It("returns an error if upload fails", func() {
