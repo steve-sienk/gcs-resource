@@ -270,7 +270,7 @@ var _ = Describe("In Command", func() {
 						Expect(response.Metadata[1].Value).To(Equal("gs://bucket-name/folder/file.json"))
 
 						Expect(response.Metadata[2].Name).To(Equal("contents"))
-						Expect(response.Metadata[2].Value).To(Equal("{\"data\": 0.1}"))
+						Expect(response.Metadata[2].Value).To(Equal("{\n    \"data\": 0.1\n}"))
 					})
 				})
 

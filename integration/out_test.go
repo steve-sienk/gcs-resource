@@ -15,10 +15,10 @@ import (
 	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
 
-	"github.com/steve-sienk/gcs-resource"
-	"github.com/steve-sienk/gcs-resource/out"
 	"github.com/mholt/archiver"
 	"github.com/nu7hatch/gouuid"
+	"github.com/steve-sienk/gcs-resource"
+	"github.com/steve-sienk/gcs-resource/out"
 )
 
 var _ = Describe("out", func() {

@@ -37,9 +37,9 @@ func (command *OutCommand) Run(sourceDir string, request OutRequest) (OutRespons
 
 	objectPath := command.objectPath(request, localPath)
 
-	if strings.HasSuffix(objectPath, ".json"){
-		data,_ := ioutil.ReadFile(localPath)
-		contents = string (data)
+	if strings.HasSuffix(objectPath, ".json") {
+		data, _ := ioutil.ReadFile(localPath)
+		contents = gcsresource.PrettifyJson(string(data))
 	}
 
 	objectContentType := command.objectContentType(request)

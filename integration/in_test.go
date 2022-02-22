@@ -16,9 +16,9 @@ import (
 	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
 
+	uuid "github.com/nu7hatch/gouuid"
 	gcsresource "github.com/steve-sienk/gcs-resource"
 	"github.com/steve-sienk/gcs-resource/in"
-	uuid "github.com/nu7hatch/gouuid"
 )
 
 var _ = Describe("in", func() {

@@ -180,7 +180,6 @@ var _ = Describe("Out Command", func() {
 				err := os.MkdirAll(filepath.Dir(fullPath), 0755)
 				Expect(err).ToNot(HaveOccurred())
 
-
 				sourcePath := filepath.Join("fixtures", "file.json")
 				Expect(sourcePath).To(BeAnExistingFile())
 
@@ -225,7 +224,7 @@ var _ = Describe("Out Command", func() {
 					Expect(response.Metadata[1].Value).To(Equal("gs://bucket-name/folder/file.json"))
 
 					Expect(response.Metadata[2].Name).To(Equal("contents"))
-					Expect(response.Metadata[2].Value).To(Equal("{\"data\": -1.23}"))
+					Expect(response.Metadata[2].Value).To(Equal("{\n    \"data\": -1.23\n}"))
 				})
 			})
 

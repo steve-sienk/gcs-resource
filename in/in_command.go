@@ -86,9 +86,9 @@ func (command *InCommand) inByRegex(destinationDir string, request InRequest, sk
 				return InResponse{}, err
 			}
 
-			if strings.HasSuffix(objectPath, ".json"){
-				data,_ := ioutil.ReadFile(localPath)
-				contents = string (data)
+			if strings.HasSuffix(objectPath, ".json") {
+				data, _ := ioutil.ReadFile(localPath)
+				contents = gcsresource.PrettifyJson(string(data))
 			}
 
 			if request.Params.Unpack {
@@ -169,9 +169,9 @@ func (command *InCommand) inByVersionedFile(destinationDir string, request InReq
 				return InResponse{}, err
 			}
 
-			if strings.HasSuffix(objectPath, ".json"){
-				data,_ := ioutil.ReadFile(localPath)
-				contents = string (data)
+			if strings.HasSuffix(objectPath, ".json") {
+				data, _ := ioutil.ReadFile(localPath)
+				contents = gcsresource.PrettifyJson(string(data))
 			}
 
 			if request.Params.Unpack {

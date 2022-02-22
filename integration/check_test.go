@@ -16,9 +16,9 @@ import (
 	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
 
+	"github.com/nu7hatch/gouuid"
 	"github.com/steve-sienk/gcs-resource"
 	"github.com/steve-sienk/gcs-resource/check"
-	"github.com/nu7hatch/gouuid"
 )
 
 var _ = Describe("check", func() {
